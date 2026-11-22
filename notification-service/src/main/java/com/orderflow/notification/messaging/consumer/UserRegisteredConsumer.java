@@ -25,6 +25,9 @@ public class UserRegisteredConsumer {
         log.info("Received user-registered event in notification-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             UUID userId = UUID.fromString(root.get("userId").asText());
             String email = root.get("email").asText();
             String firstName = root.hasNonNull("firstName") ? root.get("firstName").asText() : "Customer";

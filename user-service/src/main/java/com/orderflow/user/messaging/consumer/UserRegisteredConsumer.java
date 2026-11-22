@@ -24,6 +24,9 @@ public class UserRegisteredConsumer {
         log.info("Received user-registered event in user-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             String correlationId = root.has("correlationId") ? root.get("correlationId").asText() : null;
             CorrelationIdUtil.setCorrelationId(correlationId);
 

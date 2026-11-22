@@ -25,6 +25,9 @@ public class OrderConfirmedConsumer {
         log.info("Received order-confirmed event in notification-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             UUID userId = UUID.fromString(root.get("userId").asText());
             String orderNumber = root.get("orderNumber").asText();
             String totalAmount = root.hasNonNull("totalAmount") ? root.get("totalAmount").asText() : "0.00";

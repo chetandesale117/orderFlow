@@ -25,6 +25,9 @@ public class PaymentInitiatedConsumer {
         log.info("Received payment-initiated event in payment-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             String correlationId = root.hasNonNull("correlationId") ? root.get("correlationId").asText() : null;
             CorrelationIdUtil.setCorrelationId(correlationId);
 

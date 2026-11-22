@@ -35,7 +35,7 @@ spring:
 payment:
   provider: SANDBOX
   sandbox:
-    success-rate-percentage: 80
+    success-rate-percentage: 100
     processing-delay-ms: 500
     webhook-secret: orderflow_sandbox_secret_key_12345
 

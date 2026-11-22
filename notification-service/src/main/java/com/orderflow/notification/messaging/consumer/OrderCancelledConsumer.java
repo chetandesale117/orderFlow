@@ -25,6 +25,9 @@ public class OrderCancelledConsumer {
         log.info("Received order-cancelled event in notification-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             UUID userId = UUID.fromString(root.get("userId").asText());
             String orderNumber = root.get("orderNumber").asText();
             String reason = root.hasNonNull("reason") ? root.get("reason").asText() : "Cancelled";

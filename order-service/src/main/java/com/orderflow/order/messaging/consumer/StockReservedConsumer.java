@@ -24,6 +24,9 @@ public class StockReservedConsumer {
         log.info("Received stock-reserved event in order-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             String correlationId = root.hasNonNull("correlationId") ? root.get("correlationId").asText() : null;
             CorrelationIdUtil.setCorrelationId(correlationId);
 

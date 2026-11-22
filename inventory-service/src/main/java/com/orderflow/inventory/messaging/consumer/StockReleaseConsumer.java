@@ -27,6 +27,9 @@ public class StockReleaseConsumer {
         log.info("Received stock release request in inventory-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             String correlationId = root.hasNonNull("correlationId") ? root.get("correlationId").asText() : null;
             CorrelationIdUtil.setCorrelationId(correlationId);
 

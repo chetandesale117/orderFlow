@@ -25,6 +25,9 @@ public class OrderShippedConsumer {
         log.info("Received order-shipped event in notification-service: {}", message);
         try {
             JsonNode root = objectMapper.readTree(message);
+            if (root.isTextual()) {
+                root = objectMapper.readTree(root.asText());
+            }
             UUID userId = UUID.fromString(root.get("userId").asText());
             String orderNumber = root.get("orderNumber").asText();
 
